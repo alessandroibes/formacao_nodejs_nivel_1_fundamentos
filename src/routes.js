@@ -6,8 +6,8 @@ const database = new Database()
 
 export const routes = [
     {
-        method: buildRoutePath('GET'),
-        path: '/users',
+        method: 'GET',
+        path: buildRoutePath('/users'),
         handler: (req, res) => {
             const users = database.select('users')
 
@@ -15,8 +15,8 @@ export const routes = [
         }
     },
     {
-        method: buildRoutePath('POST'),
-        path: '/users',
+        method: 'POST',
+        path: buildRoutePath('/users'),
         handler: (req, res) => {
             const { name, email } = req.body
 
@@ -32,8 +32,23 @@ export const routes = [
         }
     },
     {
-        method: buildRoutePath('DELETE'),
-        path: '/users/ID',
+        method: 'PUT',
+        path: buildRoutePath('/users/:id'),
+        handler: (req, res) => {
+            const { id } = req.params
+            const { name, email } = req.body
+
+            database.update('users', id, {
+                name,
+                email,
+            })
+
+            return res.writeHead(204).end()
+        }
+    },
+    {
+        method: 'DELETE',
+        path: buildRoutePath('/users/:id'),
         handler: (req, res) => {
             const { id } = req.params
 
